@@ -1,0 +1,12 @@
+In Home Create New Folder inside HOME: data
+Inside that folder create new folder: db
+
+Now, we need to run mongodb server
+
+In terminal, type : mongod --dbpath=data/db -> mongod -> mongo (Server Started) 
+
+After that open the API folder and start terminal
+
+Com 1 : npm start (it might show error) 
+	If error shown: Open package.json file and remove mon from nodemon.
+
