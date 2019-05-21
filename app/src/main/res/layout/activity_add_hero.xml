@@ -8,6 +8,14 @@
     android:padding="20dp"
     tools:context=".AddHeroActivity">
 
+    <ImageView
+        android:id="@+id/imgHero"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:scaleType="centerInside"
+        />
+
     <EditText
         android:id="@+id/etName"
         android:layout_width="match_parent"

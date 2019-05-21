@@ -3,7 +3,7 @@ Inside that folder create new folder: db
 
 Now, we need to run mongodb server
 
-In terminal, type : mongod --dbpath=data/db -> mongod -> mongo (Server Started) 
+In terminal, type : mongod --dbpath=data/db -> mongod -> mongo (Server Started)
 
 After that open the API folder and start terminal
 
