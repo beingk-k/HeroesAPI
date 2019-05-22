@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24dp"
+        android:hint="Hero Name"
         android:fontFamily="sans-serif-condensed"
         />
 
@@ -29,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24dp"
+        android:hint="Hero Description"
         android:fontFamily="sans-serif-condensed"
         android:layout_marginTop="15dp"
         />
