@@ -37,7 +37,7 @@ public interface HeroesAPI {
     @POST("heroes")
     Call<Void> addHero2 (@FieldMap Map<String, String> map);
 
-    //Upload Photo
+    //For uploading image
     @Multipart
     @POST("upload")
     Call<ImageResponse> uploadImage(@Part MultipartBody.Part img);

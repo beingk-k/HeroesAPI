@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -26,11 +27,16 @@ import java.util.Map;
 
 import api.HeroesAPI;
 import model.Heroes;
+import model.ImageResponse;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import url.Url;
 
 public class AddHeroActivity extends AppCompatActivity {
 
@@ -136,9 +142,36 @@ public class AddHeroActivity extends AppCompatActivity {
         }
     }
 
+       private void StrictMode(){
+        android.os.StrictMode.ThreadPolicy threadPolicy = new android.os.StrictMode.ThreadPolicy.Builder().permitAll().build();
+        android.os.StrictMode.setThreadPolicy(threadPolicy);
+    }
+
+    private void saveImageOnly(){
+       File file = new File(imagePath);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("imageFile", file.getName(), requestBody);
+
+        HeroesAPI heroesAPI = Url.getInstance().create(HeroesAPI.class);
+        Call<ImageResponse> responseBodyCall = heroesAPI.uploadImage(body);
+
+        StrictMode();
+
+        try{
+            Response<ImageResponse> imageResponseResponse = responseBodyCall.execute();
+            //Retrieving update name of the image
+            String imageName = imageResponseResponse.body().getFilename();
+        } catch (IOException e){
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
 
     //Register Heroes Function
     private void Register(){
+       saveImageOnly();
         String name = etName.getText().toString();
         String desc = etDesc.getText().toString();
 
@@ -147,17 +180,11 @@ public class AddHeroActivity extends AppCompatActivity {
         map.put("desc", desc);
 
         Heroes heroes = new Heroes(name, desc);
-
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
-
         HeroesAPI heroesAPI = retrofit.create(HeroesAPI.class);
 
-
-        //Using Class
-        //Call<Void> voidCall = heroesAPI.registerHeroes(heroes);
-
-        //Using Field
-        //Call<Void> voidCall = heroesAPI.addHero(name, desc);
+        //Using Class      //Call<Void> voidCall = heroesAPI.registerHeroes(heroes);
+        //Using Field     //Call<Void> voidCall = heroesAPI.addHero(name, desc);
 
         //Using FieldMap
         Call<Void> voidCall = heroesAPI.addHero2(map);
@@ -179,13 +206,6 @@ public class AddHeroActivity extends AppCompatActivity {
                 Toast.makeText(AddHeroActivity.this, "Error: "+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-
-    //For Uploading & Retrieving Image (To Be Continued.....)
-    public static Retrofit getInstance(){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
-        return retrofit;
     }
 
 }

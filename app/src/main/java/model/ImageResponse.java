@@ -7,4 +7,8 @@ public class ImageResponse {
     public ImageResponse(String filename) {
         this.filename = filename;
     }
+
+    public String getFilename() {
+        return filename;
+    }
 }
